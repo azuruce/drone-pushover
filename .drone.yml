@@ -1,0 +1,21 @@
+clone:
+  git:
+    image: plugins/git
+    when:
+      event:
+        exclude: deployment
+
+pipeline:
+  build:
+    image: plugins/docker
+    dockerfile: Dockerfile
+    repo: azuruce/drone-pushover
+    secrets: [docker_username, docker_password]
+    when:
+      event:
+        exclude: deployment
+
+  notify:
+    image: azuruce/drone-pushover
+    debug: true
+    secrets: [pushover_user, pushover_token]
